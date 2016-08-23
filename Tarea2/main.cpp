@@ -53,7 +53,7 @@ int main(){
         imprime();
         usleep(100000);
     }
-    printf("¡¡¡¡ganaste!!!!");
+    printf("¡¡¡¡ganaste!!!!\n");
     return 0;
 }
 
