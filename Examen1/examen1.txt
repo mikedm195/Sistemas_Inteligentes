@@ -1,0 +1,81 @@
+1.Se tiene la siguiente arquitectura reactiva para un robot recolector de basura con un contenedor integrado, que trabaja en un piso de oficina. Suponer que el robot tiene 4 sensores diferentes que le permiten: detectar obstáculos, detectar basura, saber si el contenedor está lleno, saber si tiene basura compactada. El área de descarga es un lugar fijo al cuál el robot sabe llegar. La definición de la arquitectura es la siguente:
+
+Capa 1. Si se activa el sensor de “contenedor lleno”, se detiene y compacta la basura. 
+Capa 2: Si se activa el sensor de basura, la recoge y la almacena en su contenedor.
+Capa 3: Si se activa el sensor de obstáculo, el robot gira 180° y luego avanza en línea recta.
+Capa 4: Si se activa el sensor de “basura compactada”, se dirige al área de descarga.
+Capa 5: Si no se activa ningún sensor, el robot se mueve de manera aleatoria.
+
+De acuerdo a lo anteriormente descrito, y suponiendo que la capa de mayor prioridad es la capa 1, contesta lo siguiente:
+a) ¿Qué problema tiene el robot con la arquitectura así definida? ¿Cómo se podría corregir dicho problema?
+b) Explica en qué situación el robot puede quedar “atrapado” en una zona del ambiente, ya que para evitar obstáculos gira 180° y luego avanza en línea recta.
+
+	a)
+
+	El primer error esta desde la capa 1, ya que desde que se llena por primera vez cada paso se va a detener y compactar aun mas la basura 	que ya tiene, no verifica si ya la habia compactado o no.
+
+	otro problema aqui esta en la capa 2, ya que en esta nunca verifica que halla espacio disponible en el contenedor, y aunque este 		contenedor este ya lleno, el robot va a seguir recogiendo basura y este nunca va a caber en el contenedor
+
+	Este problema se puede solucionar facilmente verificando los status para que este robot para empezar ya que tiene el contendor lleno ya 	no vuelva a compactarlo y segundo verificar que si esta lleno y encuentra mas basura que ya no agarre esta basura
+
+	b)
+	Un problema seria que cuando este lleno se quedaria en el primer estado ya que diceque cuando este lleno lo compacte y se detenga
+	La forma en que pueda quedar atrapado en el ambiente es que hallan dos paredes en paralelo, en este caso el robot detectaria una pared 		y al voltear 180° y avanzar recto se encontraria con la segunda pared y volveria a girar 180° y avanzar y regresar a la primera pared, 		esto sucederia indefinidamente hasta que se le acabe la bateria al robot o algo pareciddo
+--------------------------------------------
+2
+Se tiene un robot caminador con dos patas que se encuentra explorando un terreno, el robot realiza diferentes tipos de camina, por ejemplo camina lento, camina rápido y camina con precaución. Cada tipo de caminado está dado por una secuencia de posiciones predefinidas cada 30 seg.; por ejemplo caminado lento, está definido por una secuencia como esta: 30 seg. pata derecha apoyada, 30 seg. dos patas apoyadas, 30 seg. dos patas apoyadas, 30 seg. pata izquierda apoyada, etc.
+
+Sin embargo se han descompuesto las cámaras de video y los usuarios no pueden ver si el robot está caminando lento, rápido o con precaución. Afortunadamente, cada pata tiene un sensor que indica si la pata está apoyada o no y esta información está siendo transmitida al usuario. Entonces se están recibiendo secuencia como las siguientes: 30 seg. sensor derecho presionado, 30 seg. ambos sensores presionados, etc. Pero los sensores no son 100% confiables, puede ser que se indique “sensor presionado”, cuando en realidad no lo esta, y visceversa.
+
+De acuerdo con lo descrito en el párrafo anterior, contesta lo siguiente:
+a) ¿Con qué modelo de los vistos en clase se podría programar para saber si el robot está caminando lento, rápido o con precaución? Justifica tu respuesta. Considera que los tipos de caminado están dados por secuencias de posiciones. 
+b) Describe la especificación para el modelo que consideras que se utilizó en la programación. (Estados, probabilidades, etc.)
+
+
+	a)﻿
+	Este problema lo resolveria usando HMM ya que en este los estados no son completamente observables y con este metodo se puede tiene una 	secuencia de observaciones, las observaciones serian el orden en que los sensores fueron detectando los pasos(esten correctos o no). 		con todas estas observaciones, se puede sacar la posibilidad de que tipo de caminata tenga en ese momento todo esto teniendo en cuenta 		las probabilidades de cuando esta equivocado el sensor y cuando este bien
+
+	b)
+	Los estados son si esta apoyando la pierna derecha, la izquierda o ambas 
+	Se tomarian en cuenta las probabilidades de cambio de estado (probabilidad que pase de derecha a izq o de derecha a ambas, etc)
+	Tambien se tomaria en cuenta las posibilidades de que un sensor tenga una lectura correcta o incorrecta
+
+----------------------------------------------------
+3
+	a)
+	Este modelo se puede resolver a travez de una cadena de markov ya que las transiciones de un estado a otro no son determinísticas y la 		probabilidad de transición de un estado a otro sólo depende del estado actual (y no de los anteriores), esto porque cada cierto tiempo 		checa en el estado actual el nuvel de bateria y dependiendo de eso es y de las probabilidades que ya se tiene de cuando va a bajar la 		bateria con las transiciones, el robot decide si moverse, limpiar o recargarse.
+
+	b)
+	En este problema el estado seria la bateria, si el led esta encendido o apagado y tambien uno que indique si actualmente este cargando, 	moviendo o limpiando
+
+	Las probabilidades que se tienen son las que dicen que tan probable es de un estado a otro se prenda el foco o no, como por ejemplo lo 		que decia en la descripcion, si la batería está cargada y el dispositivo se está moviendo existe cierta probabilidad de que después del 	desplazamiento se indique que la batería está baja.
+
+----------------------------------------
+4
+a)
+Este problema se puede resolver con calificador bayesiano simple ya que se harian varias preguntas al usuario y dependiendo de las respuestas es que tan probable es que sea cierta fruta o no. Se haran preguntas y de estas se sacaran las variables
+
+Variables =
+color  = verde, rojo, amarillo negro
+jugoso, = si, no
+tamaño = grande mediano, chico
+fruta = plátano, manzana, uvas o fresas
+
+Pregunta 1
+De que color es?
+Si es rojo hay probabilidad de que sea o manzana o fresa
+Si es amarillo hay probabilidad de que sea o manzana o platano o uva
+Si es verde hay probabilidad de que sea o manzana o platano o uva
+Si es negro hay probabilidad de que sea cualquier fruta
+
+Es jugosa?
+Si - puede ser uva o fresa
+No - puede ser platano o manzana
+
+tamaño?
+chico - uva o fresa
+mediano - fresa manzana platano,
+grande - manzana o platano
+
+
+con todas estas preguntas se formara una tabla con posibilidades de estos registros, tomando en cuanta algunas opciones y como resultado dira cual de las frutas esta comiendo, por ejemplo si es roja, verde, chico y jugoso entonces es una uva

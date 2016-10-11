@@ -41,7 +41,7 @@ void checaAtrapa();
 int main(){
     srand (time(NULL));
 
-    cargaMapa("map1.txt");
+    cargaMapa("map2.txt");
 
     ponerMalo();
     ponerLlave();
